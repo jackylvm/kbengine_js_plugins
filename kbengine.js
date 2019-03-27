@@ -3677,10 +3677,13 @@ KBEngine.KBEngineApp = function (kbengineArgs) {
         var pdatas = currModule.propertys;
         while (stream.length() > 0) {
             var utype = 0;
-            if (currModule.usePropertyDescrAlias)
+            if (currModule.usePropertyDescrAlias) {
+                var componentPropertyAliasID = stream.readUint8();
                 utype = stream.readUint8();
-            else
+            } else {
+                var componentPropertyUID = stream.readUint16();
                 utype = stream.readUint16();
+            }
 
             var propertydata = pdatas[utype];
             var setmethod = propertydata[5];
