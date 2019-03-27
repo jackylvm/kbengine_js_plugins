@@ -1482,6 +1482,7 @@ KBEngine.Entity = KBEngine.Class.extend(
             }
 
             this.base.newCall();
+            this.base.bundle.writeUint16(0); //componentPropertyUID
             this.base.bundle.writeUint16(methodID);
 
             try {
@@ -1529,6 +1530,7 @@ KBEngine.Entity = KBEngine.Class.extend(
             }
 
             this.cell.newCall();
+            this.base.bundle.writeUint16(0); //componentPropertyUID
             this.cell.bundle.writeUint16(methodID);
 
             try {
@@ -3721,10 +3723,13 @@ KBEngine.KBEngineApp = function (kbengineArgs) {
         }
 
         var methodUtype = 0;
-        if (KBEngine.moduledefs[entity.className].useMethodDescrAlias)
+        if (KBEngine.moduledefs[entity.className].useMethodDescrAlias) {
+            var componentPropertyAliasID = stream.readUint8();
             methodUtype = stream.readUint8();
-        else
+        } else {
+            var componentPropertyUID = stream.readUint16();
             methodUtype = stream.readUint16();
+        }
 
         var methoddata = KBEngine.moduledefs[entity.className].methods[methodUtype];
         var args = [];
